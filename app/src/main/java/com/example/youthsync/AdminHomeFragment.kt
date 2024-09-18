@@ -135,7 +135,8 @@ class AdminHomeFragment : Fragment() {
                     announcementsList.add(Pair(announcementKey, announcementData ?: emptyMap()))
                 }
 
-                val sortedAnnouncements = announcementsList.sortedByDescending {  
+                // Sort announcements based on the key
+                val sortedAnnouncements = announcementsList.sortedByDescending {
                     it.first.removePrefix("announcement").toIntOrNull() ?: 0
                 }
 
@@ -146,7 +147,7 @@ class AdminHomeFragment : Fragment() {
 
                     val formattedTime = timestamp?.let {
                         val date = Date(it)
-                        DateFormat.format("MM-dd-yy", date).toString()
+                        DateFormat.format("MM-dd-yy hh:mm a", date).toString()
                     } ?: "Unknown time"
 
                     val userRef = firestoreDB.collection("users").document(userUid ?: "")
@@ -155,13 +156,54 @@ class AdminHomeFragment : Fragment() {
                         val lName = userSnapshot.getString("lastName")
                         val userName = "$fName $lName"
 
-                        val textView = TextView(requireContext()).apply {
-                            text = "$userName posted: $announcementText\nAt: $formattedTime"
-                            textSize = 16f
-                            setPadding(16, 16, 16, 16)
+                        val headerLayout = LinearLayout(requireContext()).apply {
+                            orientation = LinearLayout.HORIZONTAL
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            setPadding(16, 16, 16, 0)
                         }
 
-                        binding.announcementsContainer.addView(textView)
+                        val nameTextView = TextView(requireContext()).apply {
+                            text = userName
+                            textSize = 16f
+                            setTextColor(Color.BLACK)
+                            layoutParams = LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1f
+                            )
+                        }
+                        val timeTextView = TextView(requireContext()).apply {
+                            text = formattedTime
+                            textSize = 14f
+                            setTextColor(Color.GRAY)
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                        }
+
+                        headerLayout.addView(nameTextView)
+                        headerLayout.addView(timeTextView)
+
+                        val announcementTextView = TextView(requireContext()).apply {
+                            text = announcementText
+                            textSize = 18f
+                            setTextColor(Color.BLACK)
+                            setPadding(16, 8, 16, 16)
+                            layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            ).apply {
+                                gravity = android.view.Gravity.CENTER
+                            }
+                        }
+
+                        // Add the header layout and the announcement text to the container
+                        binding.announcementsContainer.addView(headerLayout)
+                        binding.announcementsContainer.addView(announcementTextView)
                     }
                 }
             }
@@ -172,4 +214,5 @@ class AdminHomeFragment : Fragment() {
             }
         })
     }
+
 }
