@@ -10,10 +10,6 @@
             android:id="@+id/scanner_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:autoFocusButtonColor="@android:color/white"
-            app:autoFocusButtonVisible="true"
-            app:flashButtonColor="@android:color/white"
-            app:flashButtonVisible="true"
             app:frameColor="@android:color/white"
             app:frameCornersSize="50dp"
             app:frameCornersRadius="0dp"
@@ -31,6 +27,17 @@
                     android:layout_marginTop="20dp"
                     android:textAlignment="center"
                     android:text="Result"
+                    android:fontFamily="@font/lovelo"
                     android:textColor="@color/white"/>
         </com.budiyev.android.codescanner.CodeScannerView>
+        <Button
+            android:id="@+id/btnAttend"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="80dp"
+            android:backgroundTint="@color/bg"
+            android:fontFamily="@font/lovelo"
+            android:text="Attend"
+            android:textColor="@color/white" />
     </FrameLayout>

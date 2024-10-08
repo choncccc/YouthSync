@@ -20,10 +20,14 @@ import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
 import com.example.youthsync.databinding.FragmentAdminQrBinding
+import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 private const val CAMERA_REQUEST_CODE = 101
 
 class FragmentAdminQr : Fragment() {
+    private var eventID: String? = null
     private lateinit var binding: FragmentAdminQrBinding
     private var codeScanner: CodeScanner? = null // Nullable to avoid crash
 
@@ -41,6 +45,45 @@ class FragmentAdminQr : Fragment() {
         showCustomDialog()
     }
 
+
+    private fun eventAttendees(userUID: String, eventID: String) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users").document(userUID)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null && document.exists()) {
+                    val FirstName = document.getString("firstName") ?: "Unknown"
+                    val LastName = document.getString("lastName") ?: "Unknown"
+                    val fullName = "$FirstName $LastName"
+
+                    val dateFormat = SimpleDateFormat("MM-dd-yy hh:mm a", Locale.getDefault())
+                    val formattedDate = dateFormat.format(System.currentTimeMillis())
+
+                    val attendeeData = hashMapOf(
+                        "userID" to userUID,
+                        "Name" to fullName,
+                        "attendedAt" to formattedDate
+                    )
+                    db.collection("Events").document(eventID)
+                        .collection("Attendees").add(attendeeData)
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Attendee added!", Toast.LENGTH_LONG).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(requireContext(), "Error adding attendee: ${e.message}", Toast.LENGTH_LONG).show()
+                            Log.e("FragmentAdminQr", "Error adding attendee", e)
+                        }
+
+                } else {
+                    Toast.makeText(requireContext(), "User not found!", Toast.LENGTH_LONG).show()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Error fetching user data: ${e.message}", Toast.LENGTH_LONG).show()
+                Log.e("FragmentAdminQr", "Error fetching user data", e)
+            }
+    }
+
     private fun setupCodeScanner() {
         if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA)
             == PackageManager.PERMISSION_GRANTED) {
@@ -53,12 +96,19 @@ class FragmentAdminQr : Fragment() {
                 isAutoFocusEnabled = true
                 isFlashEnabled = false
 
-                decodeCallback = DecodeCallback {
+                decodeCallback = DecodeCallback { result ->
                     requireActivity().runOnUiThread {
-                        binding.txtResult.text = it.text
+                        val uid = result.text
+                        binding.txtResult.text = uid
+                        binding.btnAttend.setOnClickListener {
+                            val userUID = uid
+                            val eventID = eventID
+                            if (eventID != null) {
+                                eventAttendees(userUID, eventID)
+                            }
+                        }
                     }
                 }
-
                 errorCallback = ErrorCallback {
                     requireActivity().runOnUiThread {
                         Log.e("Main", "Camera initialization error: ${it.message}")
@@ -67,7 +117,6 @@ class FragmentAdminQr : Fragment() {
             }
             codeScanner?.startPreview()
         } else {
-            // Request permission if not granted
             makeRequest()
         }
     }
@@ -81,10 +130,27 @@ class FragmentAdminQr : Fragment() {
         val getEventName = dialogView.findViewById<EditText>(R.id.eventName)
         val btnOk = dialogView.findViewById<Button>(R.id.okButton)
 
-        btnOk.setOnClickListener {
-            dialog.dismiss()
+        val firestore = FirebaseFirestore.getInstance()
 
-            // Ensure permission before setting up scanner
+        btnOk.setOnClickListener {
+            val eventName = getEventName.text.toString().trim()
+            if (eventName.isNotEmpty()) {
+                val eventData = hashMapOf(
+                    "eventName" to eventName,
+                    "createdAt" to System.currentTimeMillis(),
+                )
+                firestore.collection("Events").add(eventData)
+                    .addOnSuccessListener { documentReference ->
+                        eventID = documentReference.id
+                        Toast.makeText(requireContext(), "Event added with ID: $eventID", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(requireContext(), "Error adding event: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(requireContext(), "Please enter an event name", Toast.LENGTH_SHORT).show()
+            }
+            dialog.dismiss()
             setUpPermission()
         }
         dialog.show()

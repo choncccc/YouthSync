@@ -58,7 +58,8 @@ class SignUpActivity : AppCompatActivity() {
             "firstName" to firstName,
             "lastName" to lastName,
             "email" to email,
-            "password" to password
+            "password" to password,
+            "role" to "user"
         )
 
         db.collection("users").document(userId)
