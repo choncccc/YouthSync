@@ -18,8 +18,8 @@ class UserHomeScreenActivity : AppCompatActivity() {
             binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
                 when(menuItem.itemId){
                     R.id.home -> updateFragment(UserHomeFragment())
-                    /*R.id.qr -> updateFragment(FragmentAdminQr())
-                    R.id.search -> updateFragment(AdminSearch())
+                    R.id.qr -> updateFragment(UserQrGeneratorFragment())
+                    /*R.id.search -> updateFragment(AdminSearch())
                     R.id.profile -> updateFragment(AdminProfile())*/
                 }
                 true

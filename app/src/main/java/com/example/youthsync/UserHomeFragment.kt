@@ -84,7 +84,6 @@ class UserHomeFragment : Fragment() {
                     announcementsList.add(Pair(announcementKey, announcementData ?: emptyMap()))
                 }
 
-                // Sort announcements based on the key
                 val sortedAnnouncements = announcementsList.sortedByDescending {
                     it.first.removePrefix("announcement").toIntOrNull() ?: 0
                 }
