@@ -5,65 +5,60 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidmads.library.qrgenearator.QRGContents
-import androidmads.library.qrgenearator.QRGEncoder
+import android.graphics.Bitmap
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import com.example.youthsync.databinding.FragmentUserQrGeneratorBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.common.BitMatrix
+import com.google.firebase.firestore.FirebaseFirestore
 
 class UserQrGeneratorFragment : Fragment() {
+    private lateinit var binding: FragmentUserQrGeneratorBinding
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestoreDB: FirebaseFirestore
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_user_qr_generator, container, false)
+    ): View {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        binding = FragmentUserQrGeneratorBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        auth = FirebaseAuth.getInstance()
+        firestoreDB = FirebaseFirestore.getInstance()
+        val user= auth.currentUser
+        //Null check kung null nga
+        if (user != null){
+            val ref = firestoreDB.collection("users").document(user.uid)
+            ref.get().addOnSuccessListener {
+                if (it != null && it.exists()) {
+                    val fName = it.getString("firstName")
+                    val lName = it.getString("lastName")
+                    binding.TVName.text = "$fName $lName"
+                    val qrCodeBitmap = generateQRCode(user.uid, 900, 900)
+                    binding.QRCode.setImageBitmap(qrCodeBitmap)
+                }
+            }
+        }else{
+            Toast.makeText(requireContext(), "Error generating your QR Code", Toast.LENGTH_LONG).show()
+        }
 
-    private fun generateQR(){
-        val options = QrVectorOptions.Builder()
-            .setPadding(.3f)
-            .setLogo(
-                QrVectorLogo(
-                    drawable = ContextCompat
-                        .getDrawable(context, R.drawable.logo),
-                    size = .25f,
-                    padding = QrVectorLogoPadding.Natural(.2f),
-                    shape = QrVectorLogoShape
-                        .Circle
-                )
-            )
-            .setBackground(
-                QrVectorBackground(
-                    drawable = ContextCompat
-                        .getDrawable(context, R.drawable.frame),
-                )
-            )
-            .setColors(
-                QrVectorColors(
-                    dark = QrVectorColor
-                        .Solid(Color(0xff345288)),
-                    ball = QrVectorColor.Solid(
-                        ContextCompat.getColor(context, R.color.your_color)
-                    ),
-                    frame = QrVectorColor.LinearGradient(
-                        colors = listOf(
-                            0f to android.graphics.Color.RED,
-                            1f to android.graphics.Color.BLUE,
-                        ),
-                        orientation = QrVectorColor.LinearGradient
-                            .Orientation.LeftDiagonal
-                    )
-                )
-            )
-            .setShapes(
-                QrVectorShapes(
-                    darkPixel = QrVectorPixelShape
-                        .RoundCorners(.5f),
-                    ball = QrVectorBallShape
-                        .RoundCorners(.25f),
-                    frame = QrVectorFrameShape
-                        .RoundCorners(.25f),
-                )
-            )
-            .build()
     }
+    private fun generateQRCode(text: String, width: Int, height: Int): Bitmap {
+        val bitMatrix: BitMatrix = MultiFormatWriter().encode(text, BarcodeFormat.QR_CODE, width, height)
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
 
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                bitmap.setPixel(x, y, if (bitMatrix.get(x, y)) android.graphics.Color.BLACK else android.graphics.Color.WHITE)
+            }
+        }
+        return bitmap
+    }
 }

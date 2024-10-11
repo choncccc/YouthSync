@@ -33,7 +33,9 @@
         android:background="@color/bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/bottomnav1"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottomnav">
+        app:labelVisibilityMode="unlabeled">
+
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 </androidx.constraintlayout.widget.ConstraintLayout>

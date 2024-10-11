@@ -54,5 +54,5 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     implementation ("com.google.android.gms:play-services-code-scanner:16.1.0")
     implementation ("com.github.yuriy-budiyev:code-scanner:2.3.0")
-    implementation ("com.github.alexzhirkevich:custom-qr-generator:2.0.0-alpha01")
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
 }

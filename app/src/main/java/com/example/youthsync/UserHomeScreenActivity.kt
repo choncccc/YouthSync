@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.youthsync.databinding.ActivityUserHomeScreenBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class UserHomeScreenActivity : AppCompatActivity() {
         private lateinit var binding : ActivityUserHomeScreenBinding
@@ -19,8 +20,7 @@ class UserHomeScreenActivity : AppCompatActivity() {
                 when(menuItem.itemId){
                     R.id.home -> updateFragment(UserHomeFragment())
                     R.id.qr -> updateFragment(UserQrGeneratorFragment())
-                    /*R.id.search -> updateFragment(AdminSearch())
-                    R.id.profile -> updateFragment(AdminProfile())*/
+                    R.id.profile -> updateFragment(UserProfileFragment())
                 }
                 true
             }

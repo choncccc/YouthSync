@@ -149,7 +149,6 @@ class UserHomeFragment : Fragment() {
                             }
                         }
 
-                        // Add the header layout and the announcement text to the container
                         binding.announcementsContainer.addView(headerLayout)
                         binding.announcementsContainer.addView(announcementTextView)
                     }
