@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminSearch"
+    android:layout_marginTop="30dp">
+
+    <TextView
+        android:id="@+id/Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SEARCH USER"
+        android:textSize="22dp"
+        android:fontFamily="@font/shrikhan"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/bg"
+        android:layout_gravity="center|top"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:layout_margin="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="40dp">
+                    <EditText
+                        android:id="@+id/ETSearch"
+                        android:layout_width="270dp"
+                        android:background="@drawable/thin_et_border"
+                        android:textColor="@color/bg"
+                        android:layout_height="40dp"
+                        android:hint="Search"
+                        android:layout_gravity="center"
+                        android:paddingStart="15dp"
+                        android:textColorHint="@color/bg"
+                        android:fontFamily="@font/glacial"
+                        android:textSize="15dp"/>
+
+                    <ImageView
+                        android:id="@+id/btnSearch"
+                        android:layout_width="30dp"
+                        android:scaleType="fitCenter"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/baseline_search_241"/>
+                </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ResultContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+</FrameLayout>

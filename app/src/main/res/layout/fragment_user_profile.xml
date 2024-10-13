@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserProfileFragment"
+    android:layout_marginTop="30dp">
+
+    <TextView
+        android:id="@+id/Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PROFILE"
+        android:textSize="22dp"
+        android:fontFamily="@font/shrikhan"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/bg"
+        android:layout_gravity="center|top"/>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:padding="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:layout_marginTop="33dp"
+            android:orientation="vertical"
+            android:background="@drawable/etborder">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+                    <TextView
+                        android:id="@+id/TVName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingStart="25dp"
+                        android:text="[Name]"
+                        android:textAlignment="center"
+                        android:textColor="@color/bg"
+                        android:fontFamily="@font/lovelo"
+                        android:textSize="20sp" />
+                    <ImageView
+                        android:id="@+id/EditProfile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:src="@drawable/baseline_edit_24"
+                        android:clickable="true"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"/>
+                 </TableRow>
+            </TableLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:textColor="@color/bg"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/glacial"
+                android:text="First Name"/>
+
+            <EditText
+                android:id="@+id/ETFName"
+                android:layout_gravity="center"
+                android:layout_width="270dp"
+                android:background="@drawable/thin_et_border"
+                android:textColor="@color/bg"
+                android:layout_height="50dp"
+                android:padding="15dp"
+                android:fontFamily="@font/glacial"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:textColor="@color/bg"
+                android:fontFamily="@font/glacial"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginTop="15dp"
+                android:text="Last Name"/>
+
+            <EditText
+                android:id="@+id/ETLName"
+                android:layout_gravity="center"
+                android:layout_width="270dp"
+                android:background="@drawable/thin_et_border"
+                android:textColor="@color/bg"
+                android:layout_height="50dp"
+                android:padding="15dp"
+                android:fontFamily="@font/glacial"
+                android:textSize="15dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/BTNSave"
+                android:layout_width="120dp"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:text="Save"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/lovelo"
+                android:backgroundTint="@color/bg"
+                android:layout_height="45dp"/>
+
+          <TextView
+              android:id="@+id/TVChangePass"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Change Password"
+              android:layout_gravity="center"
+              android:layout_marginTop="30dp"
+              android:fontFamily="@font/glacial"
+              android:textColor="@color/bg"
+              android:clickable="true"
+              android:textStyle="bold"
+              android:layout_marginBottom="10dp"/>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>
