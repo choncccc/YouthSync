@@ -53,7 +53,7 @@ class AdminProfile : Fragment() {
                 if (!documents.isEmpty) {
                     val document = documents.documents.first()
                     val eventID = document.id
-                    binding.AttendeesEvent.text = "Attendees of $eventName"
+                    binding.AttendeesEvent.text = eventName
                     fetchEventAttendees(eventID)
                 } else {
                     Toast.makeText(requireContext(), "No event found with this name", Toast.LENGTH_SHORT).show()
