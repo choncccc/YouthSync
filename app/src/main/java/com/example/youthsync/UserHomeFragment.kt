@@ -53,6 +53,7 @@ class UserHomeFragment : Fragment() {
 
         fetchName()
         fetchAllAnnouncements()
+
     }
 
     private fun fetchName() {

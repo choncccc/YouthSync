@@ -290,6 +290,7 @@ class AdminHomeFragment : Fragment() {
         recordLayout.addView(announcementTextView)
         recordLayout.addView(imageView)
 
+
         return recordLayout
     }
 }
