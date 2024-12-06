@@ -289,8 +289,6 @@ class AdminHomeFragment : Fragment() {
         recordLayout.addView(headerLayout)
         recordLayout.addView(announcementTextView)
         recordLayout.addView(imageView)
-
-
         return recordLayout
     }
 }
