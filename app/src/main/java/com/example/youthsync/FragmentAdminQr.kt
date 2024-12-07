@@ -136,7 +136,7 @@ class FragmentAdminQr : Fragment() {
         val user = auth.currentUser
 
         btnOk.setOnClickListener {
-            val eventName = getEventName.text.toString().trim()
+            val eventName = getEventName.text.toString().trim().lowercase()
             if (eventName.isNotEmpty() && user != null) {
                 val eventData = hashMapOf(
                     "eventName" to eventName,
@@ -144,7 +144,7 @@ class FragmentAdminQr : Fragment() {
                 )
                 firestore.collection("Events").add(eventData)
                     .addOnSuccessListener { documentReference ->
-                        eventID = documentReference.id // Store the event ID for later use
+                        eventID = documentReference.id
                         Toast.makeText(requireContext(), "Event added with ID: $eventID", Toast.LENGTH_SHORT).show()
                         setUpPermission()
                         dialog.dismiss()
