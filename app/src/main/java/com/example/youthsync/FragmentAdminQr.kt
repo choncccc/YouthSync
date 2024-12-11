@@ -51,23 +51,25 @@ class FragmentAdminQr : Fragment() {
         if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA)
             == PackageManager.PERMISSION_GRANTED) {
 
-            codeScanner = CodeScanner(requireContext(), binding.scannerView).apply {
-                camera = CodeScanner.CAMERA_BACK
-                formats = CodeScanner.ALL_FORMATS
-                autoFocusMode = AutoFocusMode.SAFE
-                scanMode = ScanMode.CONTINUOUS
-                isAutoFocusEnabled = true
-                isFlashEnabled = false
+            if (codeScanner == null) { // Ensure the scanner is not initialized multiple times
+                codeScanner = CodeScanner(requireContext(), binding.scannerView).apply {
+                    camera = CodeScanner.CAMERA_BACK
+                    formats = CodeScanner.ALL_FORMATS
+                    autoFocusMode = AutoFocusMode.SAFE
+                    scanMode = ScanMode.CONTINUOUS
+                    isAutoFocusEnabled = true
+                    isFlashEnabled = false
 
-                decodeCallback = DecodeCallback { result ->
-                    requireActivity().runOnUiThread {
-                        scannedUserUID = result.text
-                        binding.txtResult.text = scannedUserUID
+                    decodeCallback = DecodeCallback { result ->
+                        requireActivity().runOnUiThread {
+                            scannedUserUID = result.text
+                            binding.txtResult.text = scannedUserUID
+                        }
                     }
-                }
-                errorCallback = ErrorCallback {
-                    requireActivity().runOnUiThread {
-                        Log.e("Main", "Camera initialization error: ${it.message}")
+                    errorCallback = ErrorCallback {
+                        requireActivity().runOnUiThread {
+                            Log.e("Main", "Camera initialization error: ${it.message}")
+                        }
                     }
                 }
             }
@@ -168,6 +170,11 @@ class FragmentAdminQr : Fragment() {
     override fun onPause() {
         super.onPause()
         codeScanner?.releaseResources()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        codeScanner = null // Avoid memory leaks
     }
 
     private fun setUpPermission() {

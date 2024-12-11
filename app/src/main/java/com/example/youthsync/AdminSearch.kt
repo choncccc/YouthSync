@@ -30,7 +30,7 @@ class AdminSearch : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnSearch.setOnClickListener {
-            val toSearch = binding.ETSearch.text.toString()
+            val toSearch = binding.ETSearch.text.toString().lowercase()
             if (toSearch.isEmpty()) {
                 Toast.makeText(requireContext(), "Please enter a name to search", Toast.LENGTH_LONG).show()
                 return@setOnClickListener

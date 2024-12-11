@@ -41,7 +41,7 @@ class AdminProfile : Fragment() {
         db = FirebaseFirestore.getInstance()
 
         binding.btnSearch.setOnClickListener {
-            eventName = binding.ETSearch.text.toString().trim()
+            eventName = binding.ETSearch.text.toString().trim().lowercase()
             if (eventName.isNotEmpty()) {
                 searchEventByName(eventName)
             } else {
