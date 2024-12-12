@@ -31,12 +31,14 @@ class AdminSearch : Fragment() {
 
         binding.btnSearch.setOnClickListener {
             val toSearch = binding.ETSearch.text.toString()
+            //Toast.makeText(requireContext(), toSearch.toString(), Toast.LENGTH_LONG).show()
             if (toSearch.isEmpty()) {
                 Toast.makeText(requireContext(), "Please enter a name to search", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
             val db = FirebaseFirestore.getInstance()
             db.collection("users")
+
                 .whereEqualTo("firstName", toSearch)
                 .get()
                 .addOnSuccessListener { documents ->

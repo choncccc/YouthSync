@@ -1,12 +1,15 @@
 package com.example.youthsync
 
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -50,6 +53,7 @@ class UserHomeFragment : Fragment() {
 
         fetchName()
         fetchAllAnnouncements()
+
     }
 
     private fun fetchName() {
@@ -95,6 +99,7 @@ class UserHomeFragment : Fragment() {
                     val announcementText = announcementData["announcement"] as? String
                     val userUid = announcementData["uid"] as? String
                     val timestamp = announcementData["timestamp"] as? Long
+                    val imageBase64 = announcementData["image"] as? String
 
                     val formattedTime = timestamp?.let {
                         val date = Date(it)
@@ -107,7 +112,7 @@ class UserHomeFragment : Fragment() {
                         val lastName = userSnapshot.getString("lastName") ?: "Unknown"
                         val fullName = "$firstName $lastName"
 
-                        val recordView = createAnnouncementRecordView(fullName, announcementText ?: "", formattedTime)
+                        val recordView = createAnnouncementRecordView(fullName, announcementText ?: "", imageBase64?: "", formattedTime)
                         binding.announcementsContainer.addView(recordView)
                     }
                 }
@@ -119,18 +124,18 @@ class UserHomeFragment : Fragment() {
         })
     }
 
-    private fun createAnnouncementRecordView(fullName: String, announcement: String, timestamp: String): LinearLayout {
+    private fun createAnnouncementRecordView(fullName: String, announcement: String, image:  String, timestamp: String): LinearLayout {
         val context = requireContext()
 
         val recordLayout = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(32, 32, 32, 32) // Padding for internal content (name, timestamp, and announcement)
+            setPadding(32, 32, 32, 32)
             setBackgroundResource(R.drawable.thin_et_border)
             val params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            params.setMargins(48, 24, 48, 24) // Larger margins to ensure layout doesn't touch the screen edges
+            params.setMargins(48, 24, 48, 24)
             layoutParams = params
         }
 
@@ -175,14 +180,32 @@ class UserHomeFragment : Fragment() {
             textSize = 16f
             typeface = ResourcesCompat.getFont(context, R.font.glacial)
             setTextColor(Color.BLACK)
-            setPadding(24, 12, 24, 16)
+            setPadding(24, 12, 24, 24)
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
         }
+
+        val imageView = ImageView(context).apply {
+            if (image.isNotEmpty()) {
+                val decodedBytes = Base64.decode(image, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+                setImageBitmap(bitmap)
+            }
+            adjustViewBounds = true
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, // Width
+                LinearLayout.LayoutParams.WRAP_CONTENT  // Height
+            ).apply {
+                topMargin = 10
+            }
+        }
+
         recordLayout.addView(headerLayout)
         recordLayout.addView(announcementTextView)
+        recordLayout.addView(imageView)
 
         return recordLayout
     }

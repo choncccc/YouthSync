@@ -21,8 +21,8 @@ class SignUpActivity : AppCompatActivity() {
 
         firebaseAuth= FirebaseAuth.getInstance()
         binding.SignUpButton.setOnClickListener{
-            val fname = binding.FirstName.text.toString()
-            val lname = binding.LastName.text.toString()
+            val fname = binding.FirstName.text.toString().lowercase()
+            val lname = binding.LastName.text.toString().lowercase()
             val username = binding.Username.text.toString()
             val password = binding.Password.text.toString()
             if (fname.isEmpty() || lname.isEmpty() || username.isEmpty() || password.isEmpty()){

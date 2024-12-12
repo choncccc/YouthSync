@@ -41,7 +41,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="18dp"
-                android:text="[name]"
+                android:textColor="@color/bg"
+                android:fontFamily="@font/glacial" />
+            <TextView
+                android:layout_marginTop="20dp"
+                android:id="@+id/TVUID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="18dp"
                 android:textColor="@color/bg"
                 android:fontFamily="@font/glacial" />
         </LinearLayout>

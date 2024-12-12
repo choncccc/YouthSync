@@ -41,6 +41,7 @@ class UserQrGeneratorFragment : Fragment() {
                     val fName = it.getString("firstName")
                     val lName = it.getString("lastName")
                     binding.TVName.text = "$fName $lName"
+                    binding.TVUID.text = user.uid
                     val qrCodeBitmap = generateQRCode(user.uid, 900, 900)
                     binding.QRCode.setImageBitmap(qrCodeBitmap)
                 }
